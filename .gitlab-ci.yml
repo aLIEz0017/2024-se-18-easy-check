@@ -1,0 +1,16 @@
+image: maven:3.9-eclipse-temurin-17
+
+stages:
+  - build
+
+cache:
+  paths:
+    - .m2/repository/
+
+build:
+  stage: build
+  script:
+    - mvn clean compile
+  only:
+    - main
+    - merge_requests

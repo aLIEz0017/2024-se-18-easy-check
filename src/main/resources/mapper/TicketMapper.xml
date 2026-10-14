@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easysign.mapper.TicketMapper">
+
+    <!-- 5.2 票夹列表联表查询 -->
+    <select id="selectMyTicketsWithEvent" resultType="com.easysign.dto.response.TicketResponse">
+        SELECT
+            t.id AS ticketId,
+            t.ticket_no AS ticketNo,
+            e.title AS eventTitle,
+            e.location AS eventLocation,
+            e.start_time AS eventStartTime,
+            e.end_time AS eventEndTime,
+            e.status AS eventStatus,
+            t.status,
+            t.created_at AS createdAt,
+            t.checked_at AS checkedAt,
+            t.event_id AS eventId
+        FROM ticket t
+        LEFT JOIN event e ON t.event_id = e.id
+        WHERE t.user_id = #{userId}
+        <if test="status != null and status != ''">
+            AND t.status = #{status}
+        </if>
+        ORDER BY t.created_at DESC
+    </select>
+
+    <!-- 5.5 签到明细联表查询 -->
+    <select id="selectCheckinsWithUser" resultType="com.easysign.dto.response.TicketResponse">
+        SELECT
+            t.id AS ticketId,
+            t.ticket_no AS ticketNo,
+            u.username,
+            t.status,
+            t.created_at AS createdAt,
+            t.checked_at AS checkedAt
+        FROM ticket t
+        LEFT JOIN user u ON t.user_id = u.id
+        WHERE t.event_id = #{eventId}
+        <if test="status != null and status != ''">
+            AND t.status = #{status}
+        </if>
+        ORDER BY t.created_at DESC
+    </select>
+
+    <!-- 签到原子更新 -->
+    <update id="updateCheckin">
+        UPDATE ticket
+        SET status = 'checked', checked_at = NOW()
+        WHERE id = #{ticketId} AND status = 'pending'
+    </update>
+
+    <!-- 删除活动时批量置无效 -->
+    <update id="batchInvalidateByEventId">
+        UPDATE ticket
+        SET status = 'invalid'
+        WHERE event_id = #{eventId}
+    </update>
+
+    <!-- 活动下线时，将待签到票置为无效 -->
+    <update id="batchInvalidatePendingByEventId">
+        UPDATE ticket
+        SET status = 'invalid'
+        WHERE event_id = #{eventId} AND status = 'pending'
+    </update>
+
+</mapper>

@@ -1,0 +1,118 @@
+/* 
+ * 全局样式
+ * 
+ * 组员A 负责维护此文件。
+ * 组员C 如需添加全局样式需告知组员A。
+ */
+
+/* Tailwind CSS 入口 */
+@import "tailwindcss";
+
+/* 易签全局品牌令牌 */
+:root {
+  color-scheme: light;
+  --brand-primary: #009682;
+  --brand-primary-hover: #007f70;
+  --brand-primary-active: #006b5e;
+  --brand-light: #e8f8f5;
+  --brand-lighter: #f2fbf9;
+  --brand-gradient: linear-gradient(135deg, #00aa94 0%, #008b79 100%);
+  --page-bg: #f4faf9;
+  --surface-bg: #ffffff;
+  --surface-muted: #f8fbfa;
+  --text-primary: #12312d;
+  --text-secondary: #58706c;
+  --text-muted: #8a9d99;
+  --border-color: #dcebe8;
+  --shadow-card: 0 10px 30px rgba(13, 98, 86, 0.08);
+
+  --el-color-primary: #009682;
+  --el-color-primary-light-3: #4db6a8;
+  --el-color-primary-light-5: #80cbc1;
+  --el-color-primary-light-7: #b3e0da;
+  --el-color-primary-light-8: #cceae6;
+  --el-color-primary-light-9: #e8f8f5;
+  --el-color-primary-dark-2: #007868;
+  --el-bg-color-page: #f4faf9;
+  --el-border-radius-base: 8px;
+}
+
+/* 基础重置 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--page-bg);
+  color: var(--text-primary);
+}
+
+#app {
+  height: 100%;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a9c9c3;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/*
+ * C端「PC端手机模拟器」模式
+ *
+ * 在 PC 浏览器访问时，C端页面居中显示为 375px 宽的手机框（带圆角、边框、阴影）；
+ * 在手机浏览器访问时，自适应填满整个屏幕。
+ *
+ * 使用方式：CLayout.vue 中外层套 .c-end-container > .c-end-phone
+ */
+.c-end-container {
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f0f0f0; /* 仅在 PC 模拟器模式下显示为背景色 */
+}
+
+.c-end-phone {
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* PC 端：大于 500px 屏幕时显示为手机框 */
+@media (min-width: 500px) {
+  .c-end-container {
+    padding: 24px 0;
+  }
+
+  .c-end-phone {
+    width: 375px;
+    height: min(812px, 90dvh);
+    border-radius: 32px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.04),
+      0 20px 60px rgba(0, 0, 0, 0.12),
+      0 8px 24px rgba(0, 0, 0, 0.08);
+    background: #f4f6fa;
+    overflow: hidden;
+  }
+}

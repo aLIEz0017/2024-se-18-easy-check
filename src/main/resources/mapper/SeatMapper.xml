@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easysign.mapper.SeatMapper">
+
+    <!-- 原子占用座位 -->
+    <update id="occupySeat">
+        UPDATE seat
+        SET status = 'sold'
+        WHERE id = #{seatId}
+          AND status = 'available'
+          AND event_id = #{eventId}
+    </update>
+
+    <!-- 释放座位 -->
+    <update id="releaseSeat">
+        UPDATE seat
+        SET status = 'available'
+        WHERE id = #{seatId}
+          AND status = 'sold'
+          AND event_id = #{eventId}
+    </update>
+
+    <!-- 根据活动ID查询所有座位 -->
+    <select id="selectByEventId" resultType="com.easysign.entity.Seat">
+        SELECT id, event_id, seat_row, seat_col, seat_label, status
+        FROM seat
+        WHERE event_id = #{eventId}
+        ORDER BY seat_row ASC, seat_col ASC
+    </select>
+
+    <!-- 批量插入座位 -->
+    <insert id="insertBatch" parameterType="list">
+        INSERT INTO seat (event_id, seat_row, seat_col, seat_label, status)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.eventId}, #{item.seatRow}, #{item.seatCol}, #{item.seatLabel}, #{item.status})
+        </foreach>
+    </insert>
+
+</mapper>

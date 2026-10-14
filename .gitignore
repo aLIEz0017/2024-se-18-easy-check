@@ -1,0 +1,52 @@
+# 忽略特定文件（示例：my-private-file.txt）
+# my-private-file.txt
+
+# 忽略 private 目录（不上传到远程仓库）
+private/
+
+# 忽略 Cline Memory 文件（不上传到远程仓库）
+cline_docs/
+
+# 忽略所有 .log 文件
+# *.log
+
+# 忽略 node_modules
+node_modules/
+
+# 忽略 Python 虚拟环境
+venv/
+.venv/
+
+# 忽略 IDE 配置
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 忽略操作系统文件
+.DS_Store
+Thumbs.db
+
+# 忽略构建产物
+dist/
+build/
+coverage/
+*.pyc
+__pycache__/
+.clinerules
+.cursorrules
+.windsurfrules
+.skills/
+target/
+.jar
+*.class
+
+# Docs (AI-generated design docs, not source code)
+CLAUDE.md
+AGENTS.md
+
+# 环境变量配置（含 JWT 密钥、数据库密码等敏感信息）
+.env
+application.properties
+application.yml
+init_db.bat
